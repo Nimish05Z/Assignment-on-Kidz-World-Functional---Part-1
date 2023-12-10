@@ -1,1 +1,1 @@
-# Assignment-on-Kidz-World-Functional---Part-1
+# kidz-world-html-boilerplate
