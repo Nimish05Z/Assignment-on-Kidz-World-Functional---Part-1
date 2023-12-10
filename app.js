@@ -1,57 +1,19 @@
-// // Get all the "Add" buttons
-// var addButtons = document.querySelectorAll(".add-button");
-
-// // Add click event listener to each "Add" button
-// addButtons.forEach(function (button) {
-//   button.addEventListener("click", function () {
-//     // Get the parent div of the clicked button (which represents the book)
-//     var bookDiv = button.closest(".book");
-//     var bookName = bookDiv.querySelector(".book-name").textContent;
-//     var authorName = bookDiv.querySelector(".author-name").textContent;
-//     var price = bookDiv.querySelector(".price").textContent;
-
-//     // Create an object with the book information
-//     var bookInfo = {
-//       name: bookName,
-//       author: authorName,
-//       price: price,
-//     };
-
-//     // Convert the object to a JSON string and store it in local storage
-//     var storedBooks = JSON.parse(localStorage.getItem("cartItems")) || [];
-//     storedBooks.push(bookInfo);
-//     localStorage.setItem("cartItems", JSON.stringify(storedBooks));    
-//   });
-// });
-
-// // Get the "Cart" element
-// var cartItems = document.getElementById("cart-items");
-
-// // Add click event listener to the "Cart" element
-// cartItems.addEventListener("click", function () {
-//   // Retrieve the stored items from local storage
-//   var storedBooks = JSON.parse(localStorage.getItem("cartItems")) || [];
-//   // Log the stored data in the console
-//   console.log("Book added to cart:", bookInfo);
-//   console.log("Items in the cart:", storedBooks);
-// });
-
-// Add event listener to all "Add to Cart" buttons
+// Add event listener to all add buttons
 var addToCartButtons = document.querySelectorAll(".add-button");
 addToCartButtons.forEach(function (button) {
   button.addEventListener("click", addToCart);
 });
 
-// Add event listener to the "Cart" button
+// Add event listener to cart button
 var cartButton = document.getElementById("cart-items");
 cartButton.addEventListener("click", displayCart);
 
-// Function to handle "Add to Cart" button click
+// Function to handle add button click
 function addToCart(event) {
   var bookName = event.target.parentNode.querySelector(".book-name").textContent;
   var price = parseFloat(event.target.parentNode.querySelector(".price").textContent.slice(1));
   
-  // Check if the item is already in the cart
+  // Checking if item is already in the cart or not
   var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   var existingItem = cartItems.find(item => item.bookName === bookName);
   
@@ -65,8 +27,24 @@ function addToCart(event) {
     });
   }
 
-  // Save updated cart items to local storage
+  // Saving updated cart items to local storage
   localStorage.setItem("cartItems", JSON.stringify(cartItems));
+
+  // Update cart items count in the HTML file
+  updateCartCount();
+}
+
+function updateCartCount() {
+  var cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  var cartCountElement = document.getElementById("cart-item");
+  
+  // Calculating total quantity of items in the cart
+  var totalCount = cartItems.reduce(function (total, item) {
+    return total + item.quantity;
+  }, 0);
+
+  // Updating no of cart items in the HTML
+  cartCountElement.textContent = `Cart items (${totalCount})`;
 }
 
 // Function to handle "Cart" button click
